@@ -1,4 +1,4 @@
-Priority Queue [![Build Status](https://travis-ci.org/SBoudrias/priority-queue.png?branch=master)](https://travis-ci.org/SBoudrias/priority-queue)
+Grouped Queue [![Build Status](https://travis-ci.org/SBoudrias/grouped-queue.png?branch=master)](https://travis-ci.org/SBoudrias/grouped-queue)
 ==============
 
 In memory queue system prioritizing tasks.
@@ -11,7 +11,7 @@ Installation
 -------------
 
 ``` bash
-$ npm install --save priority-queue
+$ npm install --save grouped-queue
 ```
 
 Methods
@@ -19,19 +19,19 @@ Methods
 
 ### Constructor
 
-The constructor take an optionnal array of prioritized tasks. The first `String` name will be the first queue to be emptied, the second in second, etc.
+The constructor take an optionnal array of tasks group. The first `String` name will be the first queue to be emptied, the second in second, etc.
 
 ``` javascript
-var Queue = require('priority-queue');
+var Queue = require('grouped-queue');
 
 var queue = new Queue([ 'first', 'second', 'third' ]);
 ```
 
-### Queue#add `add( [priority], task )`
+### Queue#add `add( [group], task )`
 
-Add a task into a queue with optionnal priority. If no priority is specified, `default` (the least priority) will be use.
+Add a task into a group queue. If no group name is specified, `default` (the last one to be runned) will be use.
 
-Implicitly, each time you add a task, the queue will start running (if not already running).
+Implicitly, each time you add a task, the queue will start emptying (if not already running).
 
 Each tasks runned in the queue will receive a callback function to call once finished.
 
@@ -78,5 +78,5 @@ or better docs!
 License
 =====================
 
-Copyright (c) 2012 Simon Boudrias (twitter: @vaxilart)  
+Copyright (c) 2013 Simon Boudrias (twitter: @vaxilart)  
 Licensed under the MIT license.

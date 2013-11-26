@@ -1,5 +1,5 @@
 {
-  "name": "priority-queue",
+  "name": "grouped-queue",
   "version": "0.1.0",
   "description": "In memory queue system prioritizing tasks",
   "main": "lib/queue.js",
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/SBoudrias/priority-queue.git"
+    "url": "git://github.com/SBoudrias/grouped-queue.git"
   },
   "keywords": [
     "queue",
@@ -20,7 +20,7 @@
   "author": "Simon Boudrias <admin@simonboudrias.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/SBoudrias/priority-queue/issues"
+    "url": "https://github.com/SBoudrias/grouped-queue/issues"
   },
   "devDependencies": {
     "sinon": "~1.7.3"
