@@ -1,4 +1,4 @@
-Priority Queue
+Priority Queue [![Build Status](https://travis-ci.org/SBoudrias/priority-queue.png?branch=master)](https://travis-ci.org/SBoudrias/priority-queue)
 ==============
 
 In memory queue system prioritizing tasks.
