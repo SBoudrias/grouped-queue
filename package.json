@@ -1,0 +1,28 @@
+{
+  "name": "priority-queue",
+  "version": "0.1.0",
+  "description": "In memory queue system prioritizing tasks",
+  "main": "lib/queue.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/SBoudrias/priority-queue.git"
+  },
+  "keywords": [
+    "queue",
+    "async",
+    "task",
+    "flow",
+    "control"
+  ],
+  "author": "Simon Boudrias <admin@simonboudrias.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/SBoudrias/priority-queue/issues"
+  },
+  "devDependencies": {
+    "sinon": "~1.7.3"
+  }
+}
