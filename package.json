@@ -1,6 +1,6 @@
 {
   "name": "grouped-queue",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "In memory queue system prioritizing tasks",
   "main": "lib/queue.js",
   "scripts": {
