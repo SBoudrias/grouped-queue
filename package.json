@@ -26,6 +26,7 @@
     "sinon": "~1.7.3"
   },
   "dependencies": {
-    "lodash": "~2.4.1"
+    "lodash": "~2.4.1",
+    "setimmediate": "~1.0.1"
   }
 }
