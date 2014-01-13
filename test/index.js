@@ -90,6 +90,13 @@ describe('Queue', function() {
         done();
       }.bind(this));
     });
+
+    it('emit `end` event once the queue is cleared.', function (done) {
+      this.q.on('end', function () {
+        done();
+      });
+      this.q.add( 'after', this.task1 );
+    });
   });
 
 });
