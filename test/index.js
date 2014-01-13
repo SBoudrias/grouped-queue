@@ -54,8 +54,10 @@ describe('Queue', function() {
     it('run task in "First-in First-out" order', function() {
       this.q.add( this.task2 );
       this.q.add( this.task1 );
-      assert.equal( this.runOrder[0], 'task2' );
-      assert.equal( this.runOrder[1], 'task1' );
+      this.q.once('end', function() {
+        assert.equal( this.runOrder[0], 'task2' );
+        assert.equal( this.runOrder[1], 'task1' );
+      }.bind(this));
     });
 
     it('run async tasks', function( done ) {
@@ -76,8 +78,10 @@ describe('Queue', function() {
       this.q.add( 'before', this.task1 );
       stub.restore();
       this.q.run();
-      assert.equal( this.runOrder[0], 'task1' );
-      assert.equal( this.runOrder[1], 'task2' );
+      this.q.once('end', function() {
+        assert.equal( this.runOrder[0], 'task1' );
+        assert.equal( this.runOrder[1], 'task2' );
+      }.bind(this));
     });
 
     it('always re-exec from the first queue down', function( done ) {
@@ -85,8 +89,10 @@ describe('Queue', function() {
         this.q.add( 'after', this.task1 );
         this.q.add( 'before', this.task2 );
         cb();
-        assert.equal( this.runOrder[0], 'task2' );
-        assert.equal( this.runOrder[1], 'task1' );
+        this.q.once('end', function() {
+          assert.equal( this.runOrder[0], 'task2' );
+          assert.equal( this.runOrder[1], 'task1' );
+        }.bind(this));
         done();
       }.bind(this));
     });
