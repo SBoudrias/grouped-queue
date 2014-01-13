@@ -41,13 +41,6 @@ queue.add(function( cb ) {
 });
 ```
 
-Events
--------------
-
-### `end`
-
-This event is called **each time** the queue emptied itself.
-
 #### Pro tip
 
 Bind your tasks with context and arguments!
@@ -63,6 +56,12 @@ queue.add( task.bind(null, models) );
 
 Yes!
 
+Events
+-------------
+
+### `end`
+
+This event is called **each time** the queue emptied itself.
 
 Todos
 ==========
