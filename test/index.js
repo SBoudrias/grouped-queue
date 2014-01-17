@@ -3,6 +3,7 @@ var sinon = require('sinon');
 
 var Queue = require('../lib/queue');
 var SubQueue = require('../lib/subqueue');
+var _ = require('lodash');
 
 describe('Queue', function() {
 
@@ -22,6 +23,12 @@ describe('Queue', function() {
 
     it('create a default queue', function() {
       assert( this.q.__queues__.default instanceof SubQueue );
+      assert.equal( _.last(Object.keys(this.q.__queues__)), 'default' );
+    });
+
+    it('allow redifining `default` queue position', function () {
+      var queue = new Queue([ 'before', 'default', 'after' ]);
+      assert.deepEqual( Object.keys(queue.__queues__), [ 'before', 'default', 'after' ]);
     });
   });
 
