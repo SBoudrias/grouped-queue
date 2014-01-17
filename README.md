@@ -75,12 +75,6 @@ Events
 
 This event is called **each time** the queue emptied itself.
 
-Todos
-==========
-
-+ Add named task support to prevent duplicate tasks to be runned
-+ Allow sub-queues to run multiple tasks concurrently
-
 
 Contributing
 =====================
