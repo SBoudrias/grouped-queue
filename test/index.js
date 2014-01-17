@@ -6,7 +6,6 @@ var SubQueue = require('../lib/subqueue');
 var _ = require('lodash');
 
 describe('Queue', function() {
-
   beforeEach(function() {
     var runOrder = this.runOrder = [];
     this.q = new Queue([ 'before', 'run', 'after' ]);
@@ -40,13 +39,13 @@ describe('Queue', function() {
     it('add task to a queue', function() {
       this.q.add( 'before', this.task1 );
       this.q.add( 'after', this.task2 );
-      assert.equal( this.q.__queues__.before.shift(), this.task1 );
-      assert.equal( this.q.__queues__.after.shift(), this.task2 );
+      assert.equal( this.q.__queues__.before.shift().task, this.task1 );
+      assert.equal( this.q.__queues__.after.shift().task, this.task2 );
     });
 
     it('default task in the default queue', function() {
       this.q.add( this.task1 );
-      assert.equal( this.q.__queues__.default.shift(), this.task1 );
+      assert.equal( this.q.__queues__.default.shift().task, this.task1 );
     });
 
     it('calls run', function() {
@@ -54,10 +53,15 @@ describe('Queue', function() {
       this.q.add( this.task2 );
       assert( this.runStub.called );
     });
+
+    it('only run named task one', function () {
+      this.q.add(this.task1, { once: 'done' });
+      this.q.add(this.task2, { once: 'done' });
+      assert.equal( this.q.__queues__.default.__queue__.length, 1 );
+    });
   });
 
   describe('#run', function() {
-
     it('run task in "First-in First-out" order', function() {
       this.q.add( this.task2 );
       this.q.add( this.task1 );
@@ -111,5 +115,4 @@ describe('Queue', function() {
       this.q.add( 'after', this.task1 );
     });
   });
-
 });

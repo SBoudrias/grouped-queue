@@ -21,15 +21,17 @@ Methods
 
 The constructor take an optionnal array of tasks group. The first `String` name will be the first queue to be emptied, the second in second, etc.
 
+By default, the constructor always add a `default` queue at the last position. You can overwrite the position of the `default` group if you specify it explicitly.
+
 ``` javascript
 var Queue = require('grouped-queue');
 
 var queue = new Queue([ 'first', 'second', 'third' ]);
 ```
 
-### Queue#add `add( [group], task )`
+### Queue#add `add( [group], task, [options] )`
 
-Add a task into a group queue. If no group name is specified, `default` (the last one to be runned) will be use.
+Add a task into a group queue. If no group name is specified, `default` will be use.
 
 Implicitly, each time you add a task, the queue will start emptying (if not already running).
 
@@ -39,6 +41,16 @@ Each tasks runned in the queue will receive a callback function to call once fin
 queue.add(function( cb ) {
   DB.fetch().then( cb );
 });
+```
+
+You can register tasks in queues that will be dropped if they're already planned. This is done with the `once` option. You pass a String (basically a name) to the `once` option.
+
+``` javascript
+// This one will eventually run
+queue.add( method, { once: "readDB" });
+
+// This one will be dropped as `method` is currently in the queue
+queue.add( method3, { once: "readDB" });
 ```
 
 #### Pro tip
