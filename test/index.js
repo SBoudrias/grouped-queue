@@ -54,6 +54,12 @@ describe('Queue', function() {
       assert( this.runStub.called );
     });
 
+    it('does not call run', function () {
+      this.q.add('before', this.task1, { run: false });
+      this.q.add('after', this.task2, { run: false });
+      assert.equal( this.runStub.called, false );
+    });
+
     it('only run named task one', function () {
       this.q.add(this.task1, { once: 'done' });
       this.q.add(this.task2, { once: 'done' });
@@ -104,6 +110,17 @@ describe('Queue', function() {
           assert.equal( this.runOrder[0], 'task2' );
           assert.equal( this.runOrder[1], 'task1' );
         }.bind(this));
+        done();
+      }.bind(this));
+    });
+
+    it('run the queues explicitly after tasks are added', function( done ) {
+      this.q.add( 'before', this.task1, { run: false })
+      this.q.add( 'after', this.task2, { run: false });
+      this.q.run();
+      this.q.once('end', function() {
+        assert.equal( this.runOrder[0], 'task1' );
+        assert.equal( this.runOrder[1], 'task2' );
         done();
       }.bind(this));
     });
