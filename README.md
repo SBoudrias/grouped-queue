@@ -43,6 +43,8 @@ queue.add(function( cb ) {
 });
 ```
 
+#### Option: `once`
+
 You can register tasks in queues that will be dropped if they're already planned. This is done with the `once` option. You pass a String (basically a name) to the `once` option.
 
 ``` javascript
@@ -53,7 +55,15 @@ queue.add( method, { once: "readDB" });
 queue.add( method3, { once: "readDB" });
 ```
 
-#### Pro tip
+#### Option: `run`
+
+You can register a task without launching the run loop by passing the argument `run: false`.
+
+```javascript
+queue.add( method, { run: false });
+```
+
+### Pro tip
 
 Bind your tasks with context and arguments!
 
@@ -84,7 +94,7 @@ Contributing
 or bug fix. `npm test` to run the test suite.  
 **Documentation**: Add documentation for every API change. Feel free to send corrections
 or better docs!  
-**Pull Requests**: Send _fixes_ PR on the `master` branch. Any new features should be send on the `wip`branch.
+**Pull Requests**: Send _fixes_ PR on the `master` branch.
 
 
 License
