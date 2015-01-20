@@ -6,10 +6,7 @@
   "scripts": {
     "test": "mocha"
   },
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/SBoudrias/grouped-queue.git"
-  },
+  "repository": "SBoudrias/grouped-queue",
   "keywords": [
     "queue",
     "async",
@@ -19,14 +16,14 @@
   ],
   "author": "Simon Boudrias <admin@simonboudrias.com>",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/SBoudrias/grouped-queue/issues"
+  "files": [
+    "lib"
+  ],
+  "dependencies": {
+    "lodash": "^2.4.1"
   },
   "devDependencies": {
-    "sinon": "~1.7.3"
-  },
-  "dependencies": {
-    "lodash": "~2.4.1",
-    "setimmediate": "~1.0.1"
+    "mocha": "^2.1.0",
+    "sinon": "^1.12.2"
   }
 }
