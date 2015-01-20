@@ -1,9 +1,9 @@
+'use strict';
 var assert = require('assert');
 var sinon = require('sinon');
-
+var _ = require('lodash');
 var Queue = require('../lib/queue');
 var SubQueue = require('../lib/subqueue');
-var _ = require('lodash');
 
 describe('Queue', function() {
   beforeEach(function() {
