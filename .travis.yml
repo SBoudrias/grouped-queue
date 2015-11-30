@@ -1,7 +1,6 @@
 language: node_js
 node_js:
-  - '0.11'
-  - '0.10'
-matrix:
-  allow_failures:
-    - node_js: "0.11"
+  - v0.10
+  - v0.12
+  - v4
+  - v5

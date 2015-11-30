@@ -4,7 +4,7 @@
   "description": "In memory queue system prioritizing tasks",
   "main": "lib/queue.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha -R spec"
   },
   "repository": "SBoudrias/grouped-queue",
   "keywords": [
