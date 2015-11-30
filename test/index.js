@@ -48,16 +48,22 @@ describe('Queue', function() {
       assert.equal( this.q.__queues__.default.shift().task, this.task1 );
     });
 
-    it('calls run', function() {
+    it('calls run', function( done ) {
       this.q.add( this.task1 );
       this.q.add( this.task2 );
-      assert( this.runStub.called );
+      setImmediate(function () {
+        assert( this.runStub.called );
+        done();
+      }.bind(this));
     });
 
     it('does not call run', function () {
       this.q.add('before', this.task1, { run: false });
       this.q.add('after', this.task2, { run: false });
-      assert.equal( this.runStub.called, false );
+      setImmediate(function () {
+        assert.equal( this.runStub.called, false );
+        done();
+      }.bind(this));
     });
 
     it('only run named task one', function () {
@@ -65,15 +71,26 @@ describe('Queue', function() {
       this.q.add(this.task2, { once: 'done' });
       assert.equal( this.q.__queues__.default.__queue__.length, 1 );
     });
+
+    it('runs priority in order', function( done ) {
+      this.runStub.restore();
+      this.q.add( 'after', this.task1 );
+      this.q.add( 'before', this.task2 );
+      this.q.once('end', function () {
+        assert.deepEqual(this.runOrder, ['task2', 'task1']);
+        done();
+      }.bind(this));
+    });
   });
 
   describe('#run', function() {
-    it('run task in "First-in First-out" order', function() {
+    it('run task in "First-in First-out" order', function( done ) {
       this.q.add( this.task2 );
       this.q.add( this.task1 );
       this.q.once('end', function() {
         assert.equal( this.runOrder[0], 'task2' );
         assert.equal( this.runOrder[1], 'task1' );
+        done();
       }.bind(this));
     });
 
@@ -89,7 +106,7 @@ describe('Queue', function() {
       });
     });
 
-    it('run prioritized tasks first', function() {
+    it('run prioritized tasks first', function( done ) {
       var stub = sinon.stub( this.q, 'run' );
       this.q.add( 'after', this.task2 );
       this.q.add( 'before', this.task1 );
@@ -98,6 +115,7 @@ describe('Queue', function() {
       this.q.once('end', function() {
         assert.equal( this.runOrder[0], 'task1' );
         assert.equal( this.runOrder[1], 'task2' );
+        done();
       }.bind(this));
     });
 
@@ -109,8 +127,8 @@ describe('Queue', function() {
         this.q.once('end', function() {
           assert.equal( this.runOrder[0], 'task2' );
           assert.equal( this.runOrder[1], 'task1' );
+          done();
         }.bind(this));
-        done();
       }.bind(this));
     });
 
