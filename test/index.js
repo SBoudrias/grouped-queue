@@ -25,9 +25,16 @@ describe('Queue', function() {
       assert.equal( _.last(Object.keys(this.q.__queues__)), 'default' );
     });
 
-    it('allow redifining `default` queue position', function () {
+    it('allow redefining `default` queue position', function () {
       var queue = new Queue([ 'before', 'default', 'after' ]);
       assert.deepEqual( Object.keys(queue.__queues__), [ 'before', 'default', 'after' ]);
+    });
+
+    it('does not mutate the arguments', function () {
+      const defaultArr = [ 'before' ];
+      var queue = new Queue(defaultArr);
+      assert.deepEqual( Object.keys(queue.__queues__), [ 'before', 'default' ]);
+      assert.deepEqual( defaultArr, [ 'before' ]);
     });
   });
 
