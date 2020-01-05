@@ -57,7 +57,7 @@ describe('Queue', function() {
       }.bind(this));
     });
 
-    it('does not call run', function () {
+    it('does not call run', function (done) {
       this.q.add('before', this.task1, { run: false });
       this.q.add('after', this.task2, { run: false });
       setImmediate(function () {
