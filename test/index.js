@@ -149,5 +149,37 @@ describe('Queue', function() {
       });
       this.q.add( 'after', this.task1 );
     });
+
+    it('pause the queues and continue', function( done ) {
+      var self = this;
+      var pause = function( cb ) {
+        self.runOrder.push('pause');
+        self.q.pause();
+        cb();
+      };
+
+      this.q.add( 'before', this.task1, { run: false });
+      this.q.add( 'run', pause, { run: false });
+      this.q.add( 'after', this.task2.bind(this), { run: false });
+      this.q.add( 'after', pause, { run: false });
+      this.q.add( 'after', this.task2, { run: false });
+
+      this.q.run();
+      this.q.on('paused', function() {
+        self.runOrder.push('paused');
+        self.q.run();
+      });
+      this.q.once('end', function() {
+        assert.equal( this.runOrder[0], 'task1' );
+        assert.equal( this.runOrder[1], 'pause' );
+        assert.equal( this.runOrder[2], 'paused' );
+        assert.equal( this.runOrder[3], 'task2' );
+        assert.equal( this.runOrder[4], 'pause' );
+        assert.equal( this.runOrder[5], 'paused' );
+        assert.equal( this.runOrder[6], 'task2' );
+        assert.equal( this.runOrder[7], undefined );
+        done();
+      }.bind(this));
+    });
   });
 });
