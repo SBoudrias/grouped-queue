@@ -150,6 +150,69 @@ describe('Queue', function() {
       }.bind(this));
     });
 
+    it('add new subqueue and run tasks', function( done ) {
+      this.q.add( 'before', this.task1, { run: false });
+      this.q.add( 'after', this.task2, { run: false });
+
+      var self = this;
+      var task3 = function( cb ) { self.runOrder.push('task3'); cb(); };
+      var task4 = function( cb ) { self.runOrder.push('task4'); cb(); };
+      var task5 = function( cb ) { self.runOrder.push('task5'); cb(); };
+      var task6 = function( cb ) { self.runOrder.push('task6'); cb(); };
+      this.q.addSubQueue( 'between', 'after' );
+      // Ignored
+      this.q.addSubQueue( 'between' );
+      this.q.addSubQueue( 'init', 'before' );
+      this.q.addSubQueue( 'after-end' );
+      this.q.add( 'init', task3, { run: false });
+      this.q.add( 'before', task4, { run: false });
+      this.q.add( 'between', task5, { run: false });
+      this.q.add( 'after-end', task6, { run: false });
+
+      this.q.run();
+      this.q.once('end', function() {
+        assert.equal( this.runOrder[0], 'task3' );
+        assert.equal( this.runOrder[1], 'task1' );
+        assert.equal( this.runOrder[2], 'task4' );
+        assert.equal( this.runOrder[3], 'task5' );
+        assert.equal( this.runOrder[4], 'task2' );
+        assert.equal( this.runOrder[5], 'task6' );
+        assert.equal( this.runOrder[6], undefined );
+        done();
+      }.bind(this));
+    });
+
+    it('run the queues from new subqueue inside task', function( done ) {
+      this.q.add( 'before', this.task1, { run: false });
+      this.q.add( 'after', this.task2, { run: false });
+
+      var self = this;
+      var task4 = function( cb ) { self.runOrder.push('task4'); cb(); };
+      var task5 = function( cb ) { self.runOrder.push('task5'); cb(); };
+      var task6 = function( cb ) { self.runOrder.push('task6'); cb(); };
+      var task3 = function( cb ) {
+        self.q.addSubQueue( 'before', 'after' );
+        self.q.addSubQueue( 'init', 'before' );
+        self.q.add( 'init', task4, { run: false });
+        self.q.add( 'before', task6, { run: false });
+        self.runOrder.push('task3'); cb();
+      };
+      this.q.add( 'before', task3, { run: false });
+      this.q.add( 'before', task5, { run: false });
+
+      this.q.run();
+      this.q.once('end', function() {
+        assert.equal( this.runOrder[0], 'task1' );
+        assert.equal( this.runOrder[1], 'task3' );
+        assert.equal( this.runOrder[2], 'task4' );
+        assert.equal( this.runOrder[3], 'task5' );
+        assert.equal( this.runOrder[4], 'task6' );
+        assert.equal( this.runOrder[5], 'task2' );
+        assert.equal( this.runOrder[6], undefined );
+        done();
+      }.bind(this));
+    });
+
     it('emit `end` event once the queue is cleared.', function (done) {
       this.q.on('end', function () {
         done();
