@@ -97,6 +97,22 @@ describe('Queue', function() {
   });
 
   describe('#run', function() {
+    it('run the queue by default', function( done ) {
+      this.q.add( function() { done(); } );
+    });
+
+    it('run the queue with runOnAdd set to false and opt is undefined', function( done ) {
+      var q = new Queue([ 'before', 'run', 'after' ], false);
+      q.add( function() { done(); } );
+      done();
+    });
+
+    it('run the queue with runOnAdd set to false and opt is defined', function( done ) {
+      var q = new Queue([ 'before', 'run', 'after' ], false);
+      q.add( function() { done(); }, {} );
+      done();
+    });
+
     it('run task in "First-in First-out" order', function( done ) {
       this.q.add( this.task2 );
       this.q.add( this.task1 );
