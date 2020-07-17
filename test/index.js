@@ -11,6 +11,12 @@ describe('Queue', function() {
     this.q = new Queue([ 'before', 'run', 'after' ]);
     this.task1 = function( cb ) { runOrder.push('task1'); cb(); };
     this.task2 = function( cb ) { runOrder.push('task2'); cb(); };
+    var callbackError = this.callbackError = new Error();
+    this.taskCallError = function( cb, stop ) { runOrder.push('taskCallError'); stop(callbackError); };
+    var throwError = this.throwError = new Error();
+    this.taskThrowError = function( ) { runOrder.push('taskThrowError'); throw throwError; };
+    var rejectError = this.rejectError = new Error();
+    this.taskRejectError = function( ) { runOrder.push('taskRejectError'); return Promise.reject(rejectError); };
   });
 
   describe('Constructor', function() {
@@ -73,7 +79,7 @@ describe('Queue', function() {
       }.bind(this));
     });
 
-    it('only run named task one', function () {
+    it('only run named task once', function () {
       this.q.add(this.task1, { once: 'done' });
       this.q.add(this.task2, { once: 'done' });
       assert.equal( this.q.__queues__.default.__queue__.length, 1 );
@@ -111,6 +117,28 @@ describe('Queue', function() {
         assert.equal( counter += 1, 2 );
         done();
       });
+    });
+
+    it('emits error on rejected tasks', function( done ) {
+      var self = this;
+      this.q.add(function() { return Promise.reject(new Error('errorTask')) });
+      var onError = function () {
+        assert(!self.q.running);
+        self.q.removeListener('error', onError);
+        done();
+      };
+      this.q.on('error', onError);
+    });
+
+    it('emits error on thrown tasks', function( done ) {
+      var self = this;
+      this.q.add(function() { throw new Error('errorTask') });
+      var onError = function () {
+        assert(!self.q.running);
+        self.q.removeListener('error', onError);
+        done();
+      };
+      this.q.on('error', onError);
     });
 
     it('run prioritized tasks first', function( done ) {
@@ -281,6 +309,30 @@ describe('Queue', function() {
         assert.equal( this.runOrder[7], undefined );
         done();
       }.bind(this));
+    });
+
+    it('emit `error` event if the callback is called.', function (done) {
+      this.q.on('error', error => {
+        assert.equal(error, this.callbackError);
+        done();
+      });
+      this.q.add( 'after', this.taskCallError );
+    });
+
+    it('emit `error` event if the task throws.', function (done) {
+      this.q.on('error', error => {
+        assert.equal(error, this.throwError);
+        done();
+      });
+      this.q.add( 'after', this.taskThrowError );
+    });
+
+    it('emit `error` event if the task rejects.', function (done) {
+      this.q.on('error', error => {
+        assert.equal(error, this.rejectError);
+        done();
+      });
+      this.q.add( 'after', this.taskRejectError );
     });
   });
 });
