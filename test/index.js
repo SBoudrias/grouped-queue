@@ -1,7 +1,6 @@
 'use strict';
 var assert = require('assert');
 var sinon = require('sinon');
-var _ = require('lodash');
 var Queue = require('../lib/queue');
 var SubQueue = require('../lib/subqueue');
 
@@ -22,7 +21,7 @@ describe('Queue', function() {
 
     it('create a default queue', function() {
       assert( this.q.__queues__.default instanceof SubQueue );
-      assert.equal( _.last(Object.keys(this.q.__queues__)), 'default' );
+      assert.equal( Object.keys(this.q.__queues__).pop(), 'default' );
     });
 
     it('allow redefining `default` queue position', function () {
