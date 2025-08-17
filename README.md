@@ -58,6 +58,24 @@ You can register a task without launching the run loop by passing the argument `
 queue.add(method, { run: false });
 ```
 
+### Delaying runs
+
+If you don't want tasks to run as they're added, you can hold the queue until manually starting.
+
+```javascript
+const queue = new Queue(
+  ["first", "second", "third"],
+  // `runOnAdd` option; this boolean instruct the queue to not auto-start.
+  false
+);
+
+// Later on, to start processing
+queue.start();
+
+// And pause to stop processing new tasks; running task will complete.
+queue.pause();
+```
+
 ## Events
 
 ### `end`
