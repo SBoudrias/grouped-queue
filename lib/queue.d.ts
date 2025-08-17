@@ -1,7 +1,7 @@
 import type event from "node:events";
 
 /**
- * 
+ *
  */
 declare class GroupedQueue extends event.EventEmitter {
   queueNames: string[];
@@ -30,7 +30,7 @@ declare class GroupedQueue extends event.EventEmitter {
   add(
     subQueueName: string,
     task: (done: () => void, stop: (error: Error) => void) => Promise<void>,
-    options?: { once?: string; run?: boolean; },
+    options?: { once?: string; run?: boolean },
   ): void;
 
   /**

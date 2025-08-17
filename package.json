@@ -5,7 +5,8 @@
   "types": "lib/queue.d.ts",
   "main": "lib/queue.js",
   "scripts": {
-    "test": "mocha -R spec"
+    "test": "mocha -R spec",
+    "lint": "npx oxlint && npx prettier --check ."
   },
   "repository": "SBoudrias/grouped-queue",
   "keywords": [
@@ -25,6 +26,8 @@
   },
   "devDependencies": {
     "mocha": "^8.0.1",
+    "oxlint": "^1.12.0",
+    "prettier": "^3.6.2",
     "sinon": "^9.0.2"
   }
 }
