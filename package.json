@@ -2,6 +2,7 @@
   "name": "grouped-queue",
   "version": "2.0.0",
   "description": "In memory queue system prioritizing tasks",
+  "types": "lib/queue.d.ts",
   "main": "lib/queue.js",
   "scripts": {
     "test": "mocha -R spec"
