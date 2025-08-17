@@ -66,7 +66,7 @@ If you don't want tasks to run as they're added, you can hold the queue until ma
 const queue = new Queue(
   ["first", "second", "third"],
   // `runOnAdd` option; this boolean instruct the queue to not auto-start.
-  false
+  false,
 );
 
 // Later on, to start processing
