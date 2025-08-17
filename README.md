@@ -1,4 +1,4 @@
-# Grouped Queue [![Build Status](https://travis-ci.org/SBoudrias/grouped-queue.svg?branch=master)](https://travis-ci.org/SBoudrias/grouped-queue)
+# Grouped Queue
 
 In memory queue system prioritizing tasks.
 
